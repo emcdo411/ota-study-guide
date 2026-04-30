@@ -7,590 +7,544 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red-900: #1a0000;
+  --red-800: #2d0000;
+  --red-700: #4a0000;
+  --red-600: #6b0000;
+  --red-500: #8b1a1a;
+  --red-400: #b22222;
+  --red-300: #cc3333;
+  --red-200: #e05555;
+  --red-100: #f08080;
+  --red-50: #ffe5e5;
+  --black: #000000;
+  --text-bright: #f5e6e6;
+  --text-mid: #c9a0a0;
+  --text-muted: #7a5555;
+  --border-glow: rgba(178,34,34,0.35);
+  --border-dim: rgba(178,34,34,0.15);
+  --card-bg: rgba(26,0,0,0.72);
+  --card-hover: rgba(45,0,0,0.9);
+}
+html { scroll-behavior: smooth; }
+body {
+  background: #000;
+  color: var(--text-bright);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  :root {
-    --red-900: #1a0000;
-    --red-800: #2d0000;
-    --red-700: #4a0000;
-    --red-600: #6b0000;
-    --red-500: #8b1a1a;
-    --red-400: #b22222;
-    --red-300: #cc3333;
-    --red-200: #e05555;
-    --red-100: #f08080;
-    --red-50:  #ffe5e5;
-    --black:   #000000;
-    --text-bright: #f5e6e6;
-    --text-mid:    #c9a0a0;
-    --text-muted:  #7a5555;
-    --border-glow: rgba(178,34,34,0.35);
-    --border-dim:  rgba(178,34,34,0.15);
-    --card-bg:     rgba(26,0,0,0.72);
-    --card-hover:  rgba(45,0,0,0.9);
-  }
+/* === BACKGROUND LAYERS === */
+.bg-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, #5c0000 0%, #1a0000 45%, #000 100%);
+  pointer-events: none;
+}
+.bg-noise {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+}
+.bg-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+}
 
-  html { scroll-behavior: smooth; }
+/* === LAYOUT === */
+.wrapper {
+  position: relative;
+  z-index: 10;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
 
-  body {
-    background: #000;
-    color: var(--text-bright);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* === HEADER === */
+header {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border-dim);
+  margin-bottom: 3rem;
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.repo-icon {
+  width: 18px;
+  height: 18px;
+  fill: var(--red-200);
+  flex-shrink: 0;
+}
+.repo-path {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+.repo-path a {
+  color: var(--red-200);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.repo-path a:hover { color: var(--red-100); text-decoration: underline; }
+.repo-path .sep { margin: 0 0.3em; color: var(--text-muted); }
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text-bright);
+  margin-bottom: 1rem;
+}
+h1 span {
+  color: var(--red-300);
+}
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-mid);
+  max-width: 600px;
+  line-height: 1.7;
+}
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 2rem;
+}
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  border-radius: 7px;
+  padding: 0.72rem 1.25rem;
+  text-decoration: none;
+  transition: all 0.22s;
+  letter-spacing: 0.05em;
+}
+.btn-primary {
+  color: var(--text-bright);
+  border: 1px solid var(--red-400);
+  background: linear-gradient(135deg, rgba(178,34,34,0.28), rgba(74,0,0,0.85));
+  box-shadow: 0 0 24px rgba(178,34,34,0.12);
+}
+.btn-primary:hover {
+  border-color: var(--red-200);
+  background: linear-gradient(135deg, rgba(178,34,34,0.42), rgba(74,0,0,0.95));
+  transform: translateY(-1px);
+}
+.btn-secondary {
+  color: var(--text-mid);
+  border: 1px solid var(--border-dim);
+  background: rgba(178,34,34,0.06);
+}
+.btn-secondary:hover {
+  border-color: var(--red-400);
+  color: var(--text-bright);
+  background: rgba(178,34,34,0.15);
+}
 
-  /* === BACKGROUND LAYERS === */
-  .bg-gradient {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% -10%, #5c0000 0%, #1a0000 45%, #000 100%);
-    pointer-events: none;
-  }
+/* === META ROW === */
+.meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-dim);
+}
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.meta-pill .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--red-400);
+  display: inline-block;
+}
+.meta-pill .dot.green { background: #2d6a2d; }
+.btn-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  padding: 0.4rem 0.85rem;
+  text-decoration: none;
+  transition: all 0.22s;
+  background: rgba(178,34,34,0.06);
+  letter-spacing: 0.03em;
+  margin-left: auto;
+}
+.btn-repo:hover {
+  border-color: var(--red-400);
+  color: var(--text-bright);
+  background: rgba(178,34,34,0.15);
+}
+.btn-repo svg { width: 14px; height: 14px; fill: currentColor; }
 
-  .bg-noise {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-    opacity: 0.4;
-    pointer-events: none;
-  }
+/* === SECTION LABELS === */
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-dim);
+}
 
-  .bg-scanlines {
-    position: fixed;
-    inset: 0;
-    z-index: 2;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.08) 2px,
-      rgba(0,0,0,0.08) 4px
-    );
-    pointer-events: none;
-  }
+/* === README CARD === */
+.readme-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-dim);
+  border-radius: 10px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 3rem;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.25s, background 0.25s, transform 0.18s;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+.readme-card:hover {
+  border-color: var(--border-glow);
+  background: var(--card-hover);
+  transform: translateY(-2px);
+}
+.readme-card.final-exam-card {
+  border-color: rgba(178,34,34,0.55);
+  background:
+    linear-gradient(135deg, rgba(45,0,0,0.98), rgba(26,0,0,0.78)),
+    radial-gradient(circle at 20% 0%, rgba(240,128,128,0.15), transparent 34%);
+  box-shadow: 0 0 45px rgba(178,34,34,0.10);
+  position: relative;
+  overflow: hidden;
+}
+.readme-card.final-exam-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent, rgba(178,34,34,0.09), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.45s ease;
+  pointer-events: none;
+}
+.readme-card.final-exam-card:hover::before {
+  transform: translateX(100%);
+}
+.readme-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.readme-header svg { width: 18px; height: 18px; fill: var(--red-300); flex-shrink: 0; }
+.readme-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  letter-spacing: 0.04em;
+}
+.readme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+.readme-stat {
+  padding: 0.85rem 1rem;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border-dim);
+  border-radius: 7px;
+}
+.readme-stat .label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+.readme-stat .value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-bright);
+}
+.readme-stat .value.accent { color: var(--red-300); }
+.exam-desc {
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+  max-width: 760px;
+}
+.exam-cta {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--red-400);
+  border-radius: 6px;
+  color: var(--text-bright);
+  background: rgba(178,34,34,0.15);
+  letter-spacing: 0.05em;
+}
 
-  /* === LAYOUT === */
-  .wrapper {
-    position: relative;
-    z-index: 10;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 2rem 6rem;
-  }
+/* === DOMAIN GRID === */
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3.5rem;
+}
+.domain-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-dim);
+  border-radius: 10px;
+  padding: 1.5rem 1.6rem;
+  text-decoration: none;
+  display: block;
+  transition: border-color 0.22s, background 0.22s, transform 0.18s;
+  backdrop-filter: blur(6px);
+  position: relative;
+  overflow: hidden;
+}
+.domain-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red-600), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.domain-card:hover {
+  border-color: var(--border-glow);
+  background: var(--card-hover);
+  transform: translateY(-2px);
+}
+.domain-card:hover::before { opacity: 1; }
+.card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--red-400);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+.card-framework {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--red-300);
+  background: rgba(178,34,34,0.12);
+  border: 1px solid rgba(178,34,34,0.2);
+  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  display: inline-block;
+  margin-bottom: 0.9rem;
+  letter-spacing: 0.06em;
+}
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 1.1rem;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-dim);
+  padding-top: 0.85rem;
+  margin-top: 0.5rem;
+}
+.card-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-dim);
+  border-radius: 3px;
+  padding: 0.15rem 0.45rem;
+  letter-spacing: 0.05em;
+}
+.card-arrow {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  transition: color 0.2s, transform 0.2s;
+}
+.domain-card:hover .card-arrow {
+  color: var(--red-300);
+  transform: translateX(3px);
+}
 
-  /* === HEADER === */
-  header {
-    padding: 4rem 0 3rem;
-    border-bottom: 1px solid var(--border-dim);
-    margin-bottom: 3rem;
-  }
+/* === STRESS TESTS SECTION === */
+.stress-section {
+  margin-bottom: 3rem;
+}
+.stress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.stress-card {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(107,0,0,0.3);
+  border-radius: 8px;
+  padding: 1.2rem 1.4rem;
+  text-decoration: none;
+  display: block;
+  transition: all 0.22s;
+}
+.stress-card:hover {
+  border-color: var(--red-600);
+  background: rgba(26,0,0,0.8);
+}
+.stress-card.final-file {
+  border-color: rgba(178,34,34,0.45);
+  background: rgba(45,0,0,0.72);
+}
+.stress-file {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--red-300);
+  margin-bottom: 0.45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.stress-file svg { width: 12px; height: 12px; fill: currentColor; }
+.stress-name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-bright);
+  margin-bottom: 0.3rem;
+}
+.stress-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
 
-  .header-top {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-  }
+/* === FOOTER === */
+footer {
+  border-top: 1px solid var(--border-dim);
+  padding-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.footer-brand span { color: var(--red-400); }
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--red-200); }
 
-  .repo-icon {
-    width: 18px;
-    height: 18px;
-    fill: var(--red-200);
-    flex-shrink: 0;
-  }
+/* === ANIMATIONS === */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+header { animation: fadeUp 0.55s ease both; }
+.readme-card { animation: fadeUp 0.6s 0.1s ease both; }
+.domain-card:nth-child(1) { animation: fadeUp 0.5s 0.15s ease both; }
+.domain-card:nth-child(2) { animation: fadeUp 0.5s 0.20s ease both; }
+.domain-card:nth-child(3) { animation: fadeUp 0.5s 0.25s ease both; }
+.domain-card:nth-child(4) { animation: fadeUp 0.5s 0.30s ease both; }
+.domain-card:nth-child(5) { animation: fadeUp 0.5s 0.35s ease both; }
+.domain-card:nth-child(6) { animation: fadeUp 0.5s 0.40s ease both; }
+.domain-card:nth-child(7) { animation: fadeUp 0.5s 0.45s ease both; }
+.domain-card:nth-child(8) { animation: fadeUp 0.5s 0.50s ease both; }
 
-  .repo-path {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    letter-spacing: 0.03em;
-  }
-
-  .repo-path a {
-    color: var(--red-200);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .repo-path a:hover { color: var(--red-100); text-decoration: underline; }
-  .repo-path .sep { margin: 0 0.3em; color: var(--text-muted); }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 5vw, 3.4rem);
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--text-bright);
-    margin-bottom: 1rem;
-  }
-
-  h1 span {
-    color: var(--red-300);
-  }
-
-  .subtitle {
-    font-size: 1rem;
-    color: var(--text-mid);
-    max-width: 600px;
-    line-height: 1.7;
-  }
-
-  .header-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-    margin-top: 2rem;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    border-radius: 7px;
-    padding: 0.72rem 1.25rem;
-    text-decoration: none;
-    transition: all 0.22s;
-    letter-spacing: 0.05em;
-  }
-
-  .btn-primary {
-    color: var(--text-bright);
-    border: 1px solid var(--red-400);
-    background: linear-gradient(135deg, rgba(178,34,34,0.28), rgba(74,0,0,0.85));
-    box-shadow: 0 0 24px rgba(178,34,34,0.12);
-  }
-
-  .btn-primary:hover {
-    border-color: var(--red-200);
-    background: linear-gradient(135deg, rgba(178,34,34,0.42), rgba(74,0,0,0.95));
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary {
-    color: var(--text-mid);
-    border: 1px solid var(--border-dim);
-    background: rgba(178,34,34,0.06);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--red-400);
-    color: var(--text-bright);
-    background: rgba(178,34,34,0.15);
-  }
-
-  /* === META ROW === */
-  .meta-row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-dim);
-  }
-
-  .meta-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .meta-pill .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--red-400);
-    display: inline-block;
-  }
-  .meta-pill .dot.green { background: #2d6a2d; }
-
-  .btn-repo {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-mid);
-    border: 1px solid var(--border-dim);
-    border-radius: 6px;
-    padding: 0.4rem 0.85rem;
-    text-decoration: none;
-    transition: all 0.22s;
-    background: rgba(178,34,34,0.06);
-    letter-spacing: 0.03em;
-    margin-left: auto;
-  }
-  .btn-repo:hover {
-    border-color: var(--red-400);
-    color: var(--text-bright);
-    background: rgba(178,34,34,0.15);
-  }
-  .btn-repo svg { width: 14px; height: 14px; fill: currentColor; }
-
-  /* === SECTION LABELS === */
-  .section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border-dim);
-  }
-
-  /* === README CARD === */
-  .readme-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-dim);
-    border-radius: 10px;
-    padding: 1.75rem 2rem;
-    margin-bottom: 3rem;
-    backdrop-filter: blur(8px);
-    transition: border-color 0.25s, background 0.25s, transform 0.18s;
-    cursor: pointer;
-    text-decoration: none;
-    display: block;
-  }
-  .readme-card:hover {
-    border-color: var(--border-glow);
-    background: var(--card-hover);
-    transform: translateY(-2px);
-  }
-
-  .readme-card.final-exam-card {
-    border-color: rgba(178,34,34,0.55);
-    background:
-      linear-gradient(135deg, rgba(45,0,0,0.98), rgba(26,0,0,0.78)),
-      radial-gradient(circle at 20% 0%, rgba(240,128,128,0.15), transparent 34%);
-    box-shadow: 0 0 45px rgba(178,34,34,0.10);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .readme-card.final-exam-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(90deg, transparent, rgba(178,34,34,0.09), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.45s ease;
-    pointer-events: none;
-  }
-
-  .readme-card.final-exam-card:hover::before {
-    transform: translateX(100%);
-  }
-
-  .readme-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
-  }
-  .readme-header svg { width: 18px; height: 18px; fill: var(--red-300); flex-shrink: 0; }
-  .readme-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--text-mid);
-    letter-spacing: 0.04em;
-  }
-
-  .readme-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-  }
-
-  .readme-stat {
-    padding: 0.85rem 1rem;
-    background: rgba(0,0,0,0.4);
-    border: 1px solid var(--border-dim);
-    border-radius: 7px;
-  }
-  .readme-stat .label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    margin-bottom: 0.35rem;
-  }
-  .readme-stat .value {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--text-bright);
-  }
-  .readme-stat .value.accent { color: var(--red-300); }
-
-  .exam-desc {
-    margin-top: 1.2rem;
-    font-size: 0.9rem;
-    color: var(--text-mid);
-    line-height: 1.6;
-    max-width: 760px;
-  }
-
-  .exam-cta {
-    margin-top: 1.5rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    padding: 0.6rem 1.2rem;
-    border: 1px solid var(--red-400);
-    border-radius: 6px;
-    color: var(--text-bright);
-    background: rgba(178,34,34,0.15);
-    letter-spacing: 0.05em;
-  }
-
-  /* === DOMAIN GRID === */
-  .domain-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.25rem;
-    margin-bottom: 3.5rem;
-  }
-
-  .domain-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-dim);
-    border-radius: 10px;
-    padding: 1.5rem 1.6rem;
-    text-decoration: none;
-    display: block;
-    transition: border-color 0.22s, background 0.22s, transform 0.18s;
-    backdrop-filter: blur(6px);
-    position: relative;
-    overflow: hidden;
-  }
-  .domain-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--red-600), transparent);
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-  .domain-card:hover {
-    border-color: var(--border-glow);
-    background: var(--card-hover);
-    transform: translateY(-2px);
-  }
-  .domain-card:hover::before { opacity: 1; }
-
-  .card-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--red-400);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-bright);
-    margin-bottom: 0.5rem;
-    line-height: 1.3;
-  }
-
-  .card-framework {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--red-300);
-    background: rgba(178,34,34,0.12);
-    border: 1px solid rgba(178,34,34,0.2);
-    border-radius: 4px;
-    padding: 0.2rem 0.55rem;
-    display: inline-block;
-    margin-bottom: 0.9rem;
-    letter-spacing: 0.06em;
-  }
-
-  .card-desc {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    line-height: 1.65;
-    margin-bottom: 1.1rem;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid var(--border-dim);
-    padding-top: 0.85rem;
-    margin-top: 0.5rem;
-  }
-
-  .card-tags {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-muted);
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border-dim);
-    border-radius: 3px;
-    padding: 0.15rem 0.45rem;
-    letter-spacing: 0.05em;
-  }
-
-  .card-arrow {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    transition: color 0.2s, transform 0.2s;
-  }
-  .domain-card:hover .card-arrow {
-    color: var(--red-300);
-    transform: translateX(3px);
-  }
-
-  /* === STRESS TESTS SECTION === */
-  .stress-section {
-    margin-bottom: 3rem;
-  }
-
-  .stress-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem;
-  }
-
-  .stress-card {
-    background: rgba(0,0,0,0.5);
-    border: 1px solid rgba(107,0,0,0.3);
-    border-radius: 8px;
-    padding: 1.2rem 1.4rem;
-    text-decoration: none;
-    display: block;
-    transition: all 0.22s;
-  }
-  .stress-card:hover {
-    border-color: var(--red-600);
-    background: rgba(26,0,0,0.8);
-  }
-
-  .stress-card.final-file {
-    border-color: rgba(178,34,34,0.45);
-    background: rgba(45,0,0,0.72);
-  }
-
-  .stress-file {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--red-300);
-    margin-bottom: 0.45rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .stress-file svg { width: 12px; height: 12px; fill: currentColor; }
-  .stress-name {
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: var(--text-bright);
-    margin-bottom: 0.3rem;
-  }
-  .stress-meta {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-  }
-
-  /* === FOOTER === */
-  footer {
-    border-top: 1px solid var(--border-dim);
-    padding-top: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .footer-brand {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-  }
-  .footer-brand span { color: var(--red-400); }
-
-  .footer-links {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-  .footer-links a {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--red-200); }
-
-  /* === ANIMATIONS === */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  header          { animation: fadeUp 0.55s ease both; }
-  .readme-card    { animation: fadeUp 0.6s 0.1s ease both; }
-  .domain-card:nth-child(1) { animation: fadeUp 0.5s 0.15s ease both; }
-  .domain-card:nth-child(2) { animation: fadeUp 0.5s 0.20s ease both; }
-  .domain-card:nth-child(3) { animation: fadeUp 0.5s 0.25s ease both; }
-  .domain-card:nth-child(4) { animation: fadeUp 0.5s 0.30s ease both; }
-  .domain-card:nth-child(5) { animation: fadeUp 0.5s 0.35s ease both; }
-  .domain-card:nth-child(6) { animation: fadeUp 0.5s 0.40s ease both; }
-  .domain-card:nth-child(7) { animation: fadeUp 0.5s 0.45s ease both; }
-  .domain-card:nth-child(8) { animation: fadeUp 0.5s 0.50s ease both; }
-
-  /* === RESPONSIVE === */
-  @media (max-width: 600px) {
-    .wrapper { padding: 0 1.25rem 4rem; }
-    .meta-row { flex-direction: column; align-items: flex-start; }
-    .btn-repo { margin-left: 0; }
-    .header-actions { flex-direction: column; align-items: stretch; }
-    .btn-primary, .btn-secondary { justify-content: center; }
-    footer { flex-direction: column; align-items: flex-start; }
-  }
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .wrapper { padding: 0 1.25rem 4rem; }
+  .meta-row { flex-direction: column; align-items: flex-start; }
+  .btn-repo { margin-left: 0; }
+  .header-actions { flex-direction: column; align-items: stretch; }
+  .btn-primary, .btn-secondary { justify-content: center; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
 </style>
 </head>
 <body>
-
 <div class="bg-gradient"></div>
 <div class="bg-noise"></div>
 <div class="bg-scanlines"></div>
@@ -598,6 +552,7 @@
 <div class="wrapper">
 
   <!-- HEADER -->
+  <!-- FIX 1: Breadcrumb now correctly shows repo root, not stress-tests subfolder -->
   <header>
     <div class="header-top">
       <svg class="repo-icon" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z"/></svg>
@@ -605,15 +560,12 @@
         <a href="https://github.com/emcdo411" target="_blank" rel="noopener">emcdo411</a>
         <span class="sep">/</span>
         <a href="https://github.com/emcdo411/ota-study-guide" target="_blank" rel="noopener">ota-study-guide</a>
-        <span class="sep">/</span>
-        <a href="https://github.com/emcdo411/ota-study-guide/tree/main/stress-tests" target="_blank" rel="noopener">stress-tests</a>
       </span>
     </div>
-
     <h1>OTA Cohort<br><span>Prompt Library</span></h1>
     <p class="subtitle">Eight advanced study prompts — one per OTA domain — each built as a dual-lens learning system for first-year OTA students and healthcare executives.</p>
-
     <div class="header-actions">
+      <!-- FIX 2: Final Exam Mode button links directly to final-prompt/final-prompt.md (confirmed working) -->
       <a class="btn-primary" href="https://github.com/emcdo411/ota-study-guide/blob/main/final-prompt/final-prompt.md" target="_blank" rel="noopener">
         → Start Final Exam Mode
       </a>
@@ -621,14 +573,14 @@
         View Prompt Index
       </a>
     </div>
-
     <div class="meta-row">
       <span class="meta-pill"><span class="dot green"></span> Academic Use</span>
       <span class="meta-pill"><span class="dot"></span> 8 Domains</span>
       <span class="meta-pill"><span class="dot"></span> Final Exam Mode</span>
       <span class="meta-pill"><span class="dot"></span> McDonald 2026</span>
       <span class="meta-pill"><span class="dot"></span> Epoch Frameworks LLC</span>
-      <a class="btn-repo" href="https://github.com/emcdo411/ota-study-guide/tree/main/stress-tests" target="_blank" rel="noopener">
+      <!-- FIX 3: "View on GitHub" now points to repo root, not stress-tests subfolder -->
+      <a class="btn-repo" href="https://github.com/emcdo411/ota-study-guide" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
         View on GitHub
       </a>
@@ -662,14 +614,13 @@
     </div>
   </a>
 
-  <!-- FINAL EXAM PROMPT -->
+  <!-- FINAL EXAM PROMPT — confirmed: final-prompt/final-prompt.md exists and resolves -->
   <div class="section-label">Final Exam Mode</div>
   <a class="readme-card final-exam-card" href="https://github.com/emcdo411/ota-study-guide/blob/main/final-prompt/final-prompt.md" target="_blank" rel="noopener">
     <div class="readme-header">
       <svg viewBox="0 0 16 16"><path d="M8 0l2.39 4.85L16 5.82l-4 3.9.94 5.48L8 12.77 3.06 15.2 4 9.72 0 5.82l5.61-.97L8 0z"/></svg>
-      <span class="readme-title">FINAL-EXAM-PROMPT.md — Image-Based Anatomy + Physiology Training</span>
+      <span class="readme-title">FINAL-EXAM-PROMPT.md — final-prompt/final-prompt.md</span>
     </div>
-
     <div class="readme-grid">
       <div class="readme-stat">
         <div class="label">Mode</div>
@@ -688,11 +639,9 @@
         <div class="value">Passing Grade Path</div>
       </div>
     </div>
-
     <p class="exam-desc">
       Train exactly how the final exam is delivered: structure identification, anatomy recognition, histology awareness, function explanation, and pressure-tested recall. This prompt is designed to help any student who puts in proper effort move from passive review to exam-ready performance.
     </p>
-
     <span class="exam-cta">→ Launch Final Exam Training</span>
   </a>
 
@@ -830,15 +779,16 @@
 
   </div>
 
-  <!-- STRESS TESTS / REPO FILES -->
+  <!-- REPOSITORY FILES -->
   <div class="stress-section">
     <div class="section-label">Repository Files</div>
     <div class="stress-grid">
 
+      <!-- final-prompt confirmed: file exists at this exact path -->
       <a class="stress-card final-file" href="https://github.com/emcdo411/ota-study-guide/blob/main/final-prompt/final-prompt.md" target="_blank" rel="noopener">
         <div class="stress-file">
           <svg viewBox="0 0 16 16"><path d="M8 0l2.39 4.85L16 5.82l-4 3.9.94 5.48L8 12.77 3.06 15.2 4 9.72 0 5.82l5.61-.97L8 0z"/></svg>
-          FINAL-EXAM-PROMPT.md
+          final-prompt/final-prompt.md
         </div>
         <div class="stress-name">Final Exam Training Prompt</div>
         <div class="stress-meta">Image-based anatomy + physiology exam simulator</div>
@@ -847,7 +797,7 @@
       <a class="stress-card" href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/OTA-PROMPT-LIBRARY-INDEX.md" target="_blank" rel="noopener">
         <div class="stress-file">
           <svg viewBox="0 0 16 16"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Z"/></svg>
-          OTA-PROMPT-LIBRARY-INDEX.md
+          stress-tests/OTA-PROMPT-LIBRARY-INDEX.md
         </div>
         <div class="stress-name">Master Index</div>
         <div class="stress-meta">Framework quick reference + A&amp;P Lab connections</div>
@@ -929,21 +879,19 @@
   </div>
 
   <!-- FOOTER -->
+  <!-- FIX 4: Footer nav now includes final-prompt folder link and repo root, not just stress-tests -->
   <footer>
     <div class="footer-brand">
       <span>Epoch Frameworks LLC</span> · McDonald 2026 · DACR License v2.6
     </div>
     <div class="footer-links">
       <a href="https://github.com/emcdo411/ota-study-guide" target="_blank" rel="noopener">Repository</a>
-      <a href="https://github.com/emcdo411/ota-study-guide/tree/main/stress-tests" target="_blank" rel="noopener">stress-tests/</a>
+      <a href="https://github.com/emcdo411/ota-study-guide/tree/main/final-prompt" target="_blank" rel="noopener">final-prompt/</a>
       <a href="https://github.com/emcdo411/ota-study-guide/blob/main/final-prompt/final-prompt.md" target="_blank" rel="noopener">Final Exam Prompt</a>
       <a href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/OTA-PROMPT-LIBRARY-INDEX.md" target="_blank" rel="noopener">Index</a>
     </div>
   </footer>
 
 </div>
-
-
-
 </body>
 </html>
