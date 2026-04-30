@@ -141,6 +141,52 @@
     line-height: 1.7;
   }
 
+  .header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    border-radius: 7px;
+    padding: 0.72rem 1.25rem;
+    text-decoration: none;
+    transition: all 0.22s;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-primary {
+    color: var(--text-bright);
+    border: 1px solid var(--red-400);
+    background: linear-gradient(135deg, rgba(178,34,34,0.28), rgba(74,0,0,0.85));
+    box-shadow: 0 0 24px rgba(178,34,34,0.12);
+  }
+
+  .btn-primary:hover {
+    border-color: var(--red-200);
+    background: linear-gradient(135deg, rgba(178,34,34,0.42), rgba(74,0,0,0.95));
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    color: var(--text-mid);
+    border: 1px solid var(--border-dim);
+    background: rgba(178,34,34,0.06);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--red-400);
+    color: var(--text-bright);
+    background: rgba(178,34,34,0.15);
+  }
+
   /* === META ROW === */
   .meta-row {
     display: flex;
@@ -221,7 +267,7 @@
     padding: 1.75rem 2rem;
     margin-bottom: 3rem;
     backdrop-filter: blur(8px);
-    transition: border-color 0.25s, background 0.25s;
+    transition: border-color 0.25s, background 0.25s, transform 0.18s;
     cursor: pointer;
     text-decoration: none;
     display: block;
@@ -229,6 +275,32 @@
   .readme-card:hover {
     border-color: var(--border-glow);
     background: var(--card-hover);
+    transform: translateY(-2px);
+  }
+
+  .readme-card.final-exam-card {
+    border-color: rgba(178,34,34,0.55);
+    background:
+      linear-gradient(135deg, rgba(45,0,0,0.98), rgba(26,0,0,0.78)),
+      radial-gradient(circle at 20% 0%, rgba(240,128,128,0.15), transparent 34%);
+    box-shadow: 0 0 45px rgba(178,34,34,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .readme-card.final-exam-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, transparent, rgba(178,34,34,0.09), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.45s ease;
+    pointer-events: none;
+  }
+
+  .readme-card.final-exam-card:hover::before {
+    transform: translateX(100%);
   }
 
   .readme-header {
@@ -271,6 +343,29 @@
     color: var(--text-bright);
   }
   .readme-stat .value.accent { color: var(--red-300); }
+
+  .exam-desc {
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    max-width: 760px;
+  }
+
+  .exam-cta {
+    margin-top: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--red-400);
+    border-radius: 6px;
+    color: var(--text-bright);
+    background: rgba(178,34,34,0.15);
+    letter-spacing: 0.05em;
+  }
 
   /* === DOMAIN GRID === */
   .domain-grid {
@@ -407,6 +502,11 @@
     background: rgba(26,0,0,0.8);
   }
 
+  .stress-card.final-file {
+    border-color: rgba(178,34,34,0.45);
+    background: rgba(45,0,0,0.72);
+  }
+
   .stress-file {
     font-family: 'DM Mono', monospace;
     font-size: 0.72rem;
@@ -435,7 +535,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: gap;
+    flex-wrap: wrap;
     gap: 1rem;
   }
 
@@ -449,6 +549,7 @@
   .footer-links {
     display: flex;
     gap: 1.5rem;
+    flex-wrap: wrap;
   }
   .footer-links a {
     font-family: 'DM Mono', monospace;
@@ -482,7 +583,9 @@
     .wrapper { padding: 0 1.25rem 4rem; }
     .meta-row { flex-direction: column; align-items: flex-start; }
     .btn-repo { margin-left: 0; }
-    footer { flex-direction: column; }
+    .header-actions { flex-direction: column; align-items: stretch; }
+    .btn-primary, .btn-secondary { justify-content: center; }
+    footer { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -510,9 +613,19 @@
     <h1>OTA Cohort<br><span>Prompt Library</span></h1>
     <p class="subtitle">Eight advanced study prompts — one per OTA domain — each built as a dual-lens learning system for first-year OTA students and healthcare executives.</p>
 
+    <div class="header-actions">
+      <a class="btn-primary" href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/FINAL-EXAM-PROMPT.md" target="_blank" rel="noopener">
+        → Start Final Exam Mode
+      </a>
+      <a class="btn-secondary" href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/OTA-PROMPT-LIBRARY-INDEX.md" target="_blank" rel="noopener">
+        View Prompt Index
+      </a>
+    </div>
+
     <div class="meta-row">
       <span class="meta-pill"><span class="dot green"></span> Academic Use</span>
       <span class="meta-pill"><span class="dot"></span> 8 Domains</span>
+      <span class="meta-pill"><span class="dot"></span> Final Exam Mode</span>
       <span class="meta-pill"><span class="dot"></span> McDonald 2026</span>
       <span class="meta-pill"><span class="dot"></span> Epoch Frameworks LLC</span>
       <a class="btn-repo" href="https://github.com/emcdo411/ota-study-guide/tree/main/stress-tests" target="_blank" rel="noopener">
@@ -547,6 +660,40 @@
         <div class="value">DACR v2.6</div>
       </div>
     </div>
+  </a>
+
+  <!-- FINAL EXAM PROMPT -->
+  <div class="section-label">Final Exam Mode</div>
+  <a class="readme-card final-exam-card" href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/FINAL-EXAM-PROMPT.md" target="_blank" rel="noopener">
+    <div class="readme-header">
+      <svg viewBox="0 0 16 16"><path d="M8 0l2.39 4.85L16 5.82l-4 3.9.94 5.48L8 12.77 3.06 15.2 4 9.72 0 5.82l5.61-.97L8 0z"/></svg>
+      <span class="readme-title">FINAL-EXAM-PROMPT.md — Image-Based Anatomy + Physiology Training</span>
+    </div>
+
+    <div class="readme-grid">
+      <div class="readme-stat">
+        <div class="label">Mode</div>
+        <div class="value accent">Exam Simulation</div>
+      </div>
+      <div class="readme-stat">
+        <div class="label">Format</div>
+        <div class="value">Image-Based Q&amp;A</div>
+      </div>
+      <div class="readme-stat">
+        <div class="label">Coverage</div>
+        <div class="value">Anatomy + Physiology</div>
+      </div>
+      <div class="readme-stat">
+        <div class="label">Outcome</div>
+        <div class="value">Passing Grade Path</div>
+      </div>
+    </div>
+
+    <p class="exam-desc">
+      Train exactly how the final exam is delivered: structure identification, anatomy recognition, histology awareness, function explanation, and pressure-tested recall. This prompt is designed to help any student who puts in proper effort move from passive review to exam-ready performance.
+    </p>
+
+    <span class="exam-cta">→ Launch Final Exam Training</span>
   </a>
 
   <!-- DOMAIN CARDS -->
@@ -688,6 +835,15 @@
     <div class="section-label">Repository Files</div>
     <div class="stress-grid">
 
+      <a class="stress-card final-file" href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/FINAL-EXAM-PROMPT.md" target="_blank" rel="noopener">
+        <div class="stress-file">
+          <svg viewBox="0 0 16 16"><path d="M8 0l2.39 4.85L16 5.82l-4 3.9.94 5.48L8 12.77 3.06 15.2 4 9.72 0 5.82l5.61-.97L8 0z"/></svg>
+          FINAL-EXAM-PROMPT.md
+        </div>
+        <div class="stress-name">Final Exam Training Prompt</div>
+        <div class="stress-meta">Image-based anatomy + physiology exam simulator</div>
+      </a>
+
       <a class="stress-card" href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/OTA-PROMPT-LIBRARY-INDEX.md" target="_blank" rel="noopener">
         <div class="stress-file">
           <svg viewBox="0 0 16 16"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Z"/></svg>
@@ -780,6 +936,7 @@
     <div class="footer-links">
       <a href="https://github.com/emcdo411/ota-study-guide" target="_blank" rel="noopener">Repository</a>
       <a href="https://github.com/emcdo411/ota-study-guide/tree/main/stress-tests" target="_blank" rel="noopener">stress-tests/</a>
+      <a href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/FINAL-EXAM-PROMPT.md" target="_blank" rel="noopener">Final Exam Prompt</a>
       <a href="https://github.com/emcdo411/ota-study-guide/blob/main/stress-tests/OTA-PROMPT-LIBRARY-INDEX.md" target="_blank" rel="noopener">Index</a>
     </div>
   </footer>
